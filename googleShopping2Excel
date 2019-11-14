@@ -1,0 +1,24 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+import xml.etree.ElementTree as et
+import pandas as pd
+from io import StringIO
+from lxml import etree as lxet
+
+def googleShopping2Excel(inFile="infile.xml",outFile="outfile.xlsx": 
+                         
+    tree = lxet.parse(filePath)
+    data = []
+    inner = {}
+    for el in tree.xpath('//item'):
+        for i in el:
+            inner[i.tag.replace("{http://base.google.com/ns/1.0}","").replace("{http://base.google.com/cns/1.0}","")] = i.text
+        data.append(inner)
+        inner = {}
+
+    df = pd.DataFrame(data)
+    df.to_excel(outFile)
+
+
+googleShopping2Excel()
